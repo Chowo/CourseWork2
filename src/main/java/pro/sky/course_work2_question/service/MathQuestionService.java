@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pro.sky.course_work2_question.exceptions.QuestionIsAlreadyAddedException;
 import pro.sky.course_work2_question.model.Question;
-import pro.sky.course_work2_question.repository.JavaQuestionRepository;
+import pro.sky.course_work2_question.repository.MathQuestionRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,23 +13,22 @@ import java.util.List;
 import static pro.sky.course_work2_question.util.Util.RANDOM;
 
 @Service
-@Qualifier("Java")
-public class JavaQuestionService implements QuestionService {
+@Qualifier("Math")
+public class MathQuestionService implements QuestionService {
 
-    private final JavaQuestionRepository repository;
+    private final MathQuestionRepository repository;
 
-
-    public JavaQuestionService(JavaQuestionRepository repository) {
+    public MathQuestionService(MathQuestionRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public Question add(String question, String answer) {
-        Question addedQuestion = new Question(question, answer);
-        if (repository.getAll().contains(addedQuestion)) {
-            throw new QuestionIsAlreadyAddedException(addedQuestion);
+        Question addebleQuestion = new Question(question, answer);
+        if (repository.getAll().contains(addebleQuestion)) {
+            throw new QuestionIsAlreadyAddedException(addebleQuestion);
         }
-        return repository.add(addedQuestion);
+        return repository.add(addebleQuestion);
     }
 
     @Override
@@ -57,9 +56,6 @@ public class JavaQuestionService implements QuestionService {
     @Override
     public Question getRandomQuestion() {
         List<Question> listOfQuestions = new ArrayList<>(repository.getAll());
-        if (listOfQuestions.isEmpty()) {
-            throw new NullPointerException("There is no questions");
-        }
         return listOfQuestions.get(RANDOM.nextInt(listOfQuestions.size()));
     }
 }

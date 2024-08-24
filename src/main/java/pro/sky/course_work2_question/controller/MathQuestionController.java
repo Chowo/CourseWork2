@@ -9,29 +9,28 @@ import pro.sky.course_work2_question.model.Question;
 import pro.sky.course_work2_question.service.QuestionService;
 
 import java.util.Collection;
-import java.util.Set;
 
 @RestController
-@RequestMapping("/exam/java")
-public class JavaQuestionController {
+@RequestMapping("/exam/math")
+public class MathQuestionController {
 
-    private final QuestionService service;
+    private final QuestionService questionService;
 
-    public JavaQuestionController(@Qualifier("Java") QuestionService service) {
-        this.service = service;
+    public MathQuestionController(@Qualifier("Math") QuestionService questionService) {
+        this.questionService = questionService;
     }
 
     @GetMapping(path = "/add")
     public Question addQuestion(@RequestParam("Question") String question, @RequestParam("Answer") String answer) {
-        return service.add(question, answer);
+        return questionService.add(question, answer);
     }
     @GetMapping(path = "/remove")
     public Question removeQuestion(@RequestParam("Question") String question, @RequestParam("Answer") String answer) {
-        return service.remove(new Question(question, answer));
+        return questionService.remove(new Question(question, answer));
     }
     @GetMapping
     public Collection<Question> getQuestions() {
-        return service.getAll();
+        return questionService.getAll();
     }
 
 }

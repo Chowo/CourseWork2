@@ -2,7 +2,7 @@ package pro.sky.course_work2_question.service;
 
 import pro.sky.course_work2_question.model.Question;
 
-import java.util.Set;
+import java.util.Collection;
 
 public interface QuestionService {
 
@@ -10,11 +10,9 @@ public interface QuestionService {
 
     public Question add(Question question);
 
-    Question remove(String question, String answer);
-
     public Question remove(Question question);
 
-    public Set<Question> getAll();
+    public Collection<Question> getAll();
 
     public Question getRandomQuestion();
 

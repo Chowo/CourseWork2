@@ -3,18 +3,13 @@ package pro.sky.course_work2_question.service;
 import pro.sky.course_work2_question.model.Question;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+
+import static pro.sky.course_work2_question.util.Util.RANDOM;
 
 public class JavaQuestionService implements QuestionService {
 
-    private final Set<Question> questions;
-    private Random random;
+    private final Set<Question> questions = new HashSet<>();
 
-
-    public JavaQuestionService() {
-        questions = new HashSet<>();
-        random = new Random(System.currentTimeMillis());
-    }
 
     @Override
     public Question add(String question, String answer) {
@@ -30,15 +25,6 @@ public class JavaQuestionService implements QuestionService {
     }
 
     @Override
-    public Question remove(String question, String answer) {
-        Question removableQuestion = new Question(question, answer);
-        if (questions.contains(removableQuestion)) {
-            questions.remove(removableQuestion);
-            return removableQuestion;
-        }
-        throw new NoSuchElementException("Указанный вопрос отсутствует");
-    }
-    @Override
     public Question remove(Question question) {
         if (questions.contains(question)) {
             questions.remove(question);
@@ -48,7 +34,7 @@ public class JavaQuestionService implements QuestionService {
     }
 
     @Override
-    public Set<Question> getAll() {
+    public Collection<Question> getAll() {
         if (questions.isEmpty()) {
             throw new NullPointerException();
         }
@@ -58,12 +44,6 @@ public class JavaQuestionService implements QuestionService {
     @Override
     public Question getRandomQuestion() {
         List<Question> listOfQuestions = new ArrayList<>(questions);
-        Collections.shuffle(listOfQuestions);
-        return listOfQuestions.get(random.nextInt(listOfQuestions.size()));
+        return listOfQuestions.get(RANDOM.nextInt(listOfQuestions.size()));
     }
-//    @Override
-//    public Question getRandomQuestion() {
-//        int randomIndex = ThreadLocalRandom.current().nextInt(questions.size()-1);
-//        return questions.stream().skip(randomIndex).findFirst().orElseThrow();
-//    }
 }

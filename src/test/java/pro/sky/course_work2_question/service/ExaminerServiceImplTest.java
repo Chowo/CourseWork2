@@ -8,13 +8,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.course_work2_question.exceptions.RequestedTooManyQuestions;
 import pro.sky.course_work2_question.model.Question;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static pro.sky.course_work2_question.constants.ExaminerServiceTestConstants.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+import static pro.sky.course_work2_question.constants.ExaminerServiceTestConstants.QUESTIONS;
 
 @ExtendWith(MockitoExtension.class)
 public class ExaminerServiceImplTest {
@@ -30,6 +33,7 @@ public class ExaminerServiceImplTest {
         when(questionService.getAll()).thenReturn(QUESTIONS);
         assertThrows(RequestedTooManyQuestions.class, () -> out.getQuestions(6));
     }
+
     @Test
     void should_throw_IllegalArgumentException() {
         when(questionService.getAll()).thenReturn(QUESTIONS);
@@ -41,13 +45,20 @@ public class ExaminerServiceImplTest {
         when(questionService.getAll()).thenReturn(QUESTIONS);
         assertEquals(out.getQuestions(4).size(), 4);
     }
+
     @Test
-    void verify_that_we_get_requested_amount_of_questions_when_not_equals_size_of_set() {
+    void verify_that_we_get_requested_amount_of_questions_when_amount_is_not_equals_size_of_set() {
+        List<Question> listOfQuestions = new ArrayList<>(QUESTIONS);
+        Question expected = listOfQuestions.get(new Random().nextInt(listOfQuestions.size()));
         when(questionService.getAll()).thenReturn(QUESTIONS);
-        assertEquals(out.getQuestions(2).size(), 2);
+        when(questionService.getRandomQuestion()).thenReturn(expected);
+
+        Collection<Question> actual = out.getQuestions(1);
+
+        assertEquals(out.getQuestions(1).size(), 1);
+        assertThat(actual).contains(expected);
 
     }
-
 
 
 }

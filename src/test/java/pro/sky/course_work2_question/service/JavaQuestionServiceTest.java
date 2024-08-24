@@ -34,13 +34,19 @@ public class JavaQuestionServiceTest {
     @Test
     void verify_that_question_was_removed() {
         Question removedQuestion = new Question("Question1", "Answer1");
-        out.remove("Question1", "Answer1");
+        out.remove(removedQuestion);
         assertFalse(out.getAll().contains(removedQuestion));
     }
+
     @Test
     void verify_that_random_question_throws_exception_when_set_is_empty() {
         out = new JavaQuestionService();
         assertThrows(IllegalArgumentException.class, out::getRandomQuestion);
+    }
+
+    @Test
+    void verify_that_random_is_not_null() {
+        assertNotNull(out.getRandomQuestion());
     }
 
 

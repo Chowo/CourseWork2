@@ -12,45 +12,38 @@ import static pro.sky.course_work2_question.util.Util.RANDOM;
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
 
-    private final QuestionService javaQuestionService;
-    private final QuestionService mathQuestionService;
+    private final List<QuestionService> services = new ArrayList<>();
+
 
     public ExaminerServiceImpl(@Qualifier("Java") QuestionService javaQuestionService,
                                @Qualifier("Math") QuestionService mathQuestionService) {
-        this.javaQuestionService = javaQuestionService;
-        this.mathQuestionService = mathQuestionService;
+        services.add(javaQuestionService);
+        services.add(mathQuestionService);
     }
 
     @Override
     public Collection<Question> getQuestions(int amount) {
-        List<Question> javaQuestionList = new ArrayList<>(javaQuestionService.getAll());
-        List<Question> mathQuestionList = new ArrayList<>(mathQuestionService.getAll());
+        List<Question> questionList = new ArrayList<>();
+        for (QuestionService service : services) {
+            questionList.addAll(service.getAll());
+        }
         Set<Question> randomSetOfQuestions = new HashSet<>();
-        if (amount > javaQuestionList.size() + mathQuestionList.size()) {
+        if (amount > questionList.size()) {
             throw new RequestedTooManyQuestions();
         } else if (amount <= 0) {
             throw new IllegalArgumentException("Unacceptable amount of questions, it must be higher than 0");
-        } else if (amount == javaQuestionList.size() + mathQuestionList.size()) {
-            System.out.println(javaQuestionList);
-            randomSetOfQuestions.addAll(javaQuestionList);
-            System.out.println(randomSetOfQuestions);
-            System.out.println(mathQuestionList);
-            randomSetOfQuestions.addAll(mathQuestionList);
-            System.out.println(randomSetOfQuestions);
+        } else if (amount == questionList.size()) {
+            randomSetOfQuestions.addAll(questionList);
             return randomSetOfQuestions;
         } else if (amount == 1) {
-            int chooseOneQuestion = RANDOM.nextInt(1, 11);
-            if (chooseOneQuestion % 2 == 0) {
-                randomSetOfQuestions.add(javaQuestionService.getRandomQuestion());
-            } else randomSetOfQuestions.add(mathQuestionService.getRandomQuestion());
+            randomSetOfQuestions.add(questionList.get(RANDOM.nextInt(questionList.size())));
+            return randomSetOfQuestions;
         }
-        int javaQuestions = RANDOM.nextInt(0, amount);
-        while (randomSetOfQuestions.size() < javaQuestions) {
-            randomSetOfQuestions.add(javaQuestionService.getRandomQuestion());
-        }
+
         while (randomSetOfQuestions.size() < amount) {
-            randomSetOfQuestions.add(mathQuestionService.getRandomQuestion());
+            randomSetOfQuestions.add(services.get(RANDOM.nextInt(services.size())).getRandomQuestion());
         }
+
         return randomSetOfQuestions;
 
     }

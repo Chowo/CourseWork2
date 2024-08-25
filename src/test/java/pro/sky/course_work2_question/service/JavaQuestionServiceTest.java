@@ -13,7 +13,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static pro.sky.course_work2_question.constants.ExaminerServiceTestConstants.*;
+import static pro.sky.course_work2_question.constants.ServiceTestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 public class JavaQuestionServiceTest {

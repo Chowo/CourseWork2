@@ -2,67 +2,42 @@ package pro.sky.course_work2_question.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pro.sky.course_work2_question.exceptions.QuestionIsAlreadyAddedException;
-import pro.sky.course_work2_question.model.Question;
-import pro.sky.course_work2_question.repository.MathQuestionRepository;
-
-import java.util.Set;
+import pro.sky.course_work2_question.exceptions.MathMethodMethodNotAllowedException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static pro.sky.course_work2_question.constants.ExaminerServiceTestConstants.*;
+import static pro.sky.course_work2_question.constants.ServiceTestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MathQuestionServiceTest {
 
-    @Mock
-    private MathQuestionRepository repository;
+    private final QuestionService out = new MathQuestionService();
 
-    @InjectMocks
-    private MathQuestionService out;
 
     @Test
-    void verify_that_adding_existing_question_throws_exception() {
-        when(repository.getAll()).thenReturn(MATH_QUESTIONS);
-
-        assertThrows(QuestionIsAlreadyAddedException.class, () -> out.add(MATH_QUESTION1));
+    void verify_that_adding_throws_exception1() {
+        assertThrows(MathMethodMethodNotAllowedException.class, () -> out.add(MATH_QUESTION1));
+    }
+    @Test
+    void verify_that_adding_throws_exception2() {
+        String question = "Question";
+        String answer = "Answer";
+        assertThrows(MathMethodMethodNotAllowedException.class, () -> out.add(question, answer));
     }
 
     @Test
-    void verify_that_math_question_was_added() {
-        Question comparableQuestion = new Question("Question5", "Answer5");
-        when(repository.add(comparableQuestion)).thenReturn(comparableQuestion);
-        assertEquals(out.add("Question5", "Answer5"), comparableQuestion);
+    void verify_that_removing_question_will_throw_exception() {
+        assertThrows(MathMethodMethodNotAllowedException.class, () -> out.remove(MATH_QUESTION1));
+
     }
 
     @Test
-    void verify_that_question_was_removed() {
-        Question removedQuestion = new Question("Question1", "Answer1");
-        Set<Question> comparableSet = Set.of(MATH_QUESTION2, MATH_QUESTION3, MATH_QUESTION4);
-        when(repository.remove(removedQuestion)).thenReturn(removedQuestion);
-        when(repository.getAll()).thenReturn(comparableSet);
-        assertEquals(out.remove(new Question("Question1", "Answer1")), removedQuestion);
-        assertFalse(out.getAll().contains(removedQuestion));
+    void verify_that_getAll_throws_exception() {
+        assertThrows(MathMethodMethodNotAllowedException.class, () -> out.getAll());
     }
 
     @Test
-    void verify_that_getAll_throws_exception_when_it_is_empty() {
-        when(repository.getAll()).thenReturn(null);
-        assertThrows(NullPointerException.class, () -> out.getAll());
-    }
-
-    @Test
-    void verify_that_random_question_throws_exception_when_set_is_empty() {
-        when(repository.getAll()).thenReturn(null);
-        assertThrows(NullPointerException.class, out::getRandomQuestion);
-    }
-
-    @Test
-    void verify_that_random_is_not_null() {
-        when(repository.getAll()).thenReturn(MATH_QUESTIONS);
+    void verify_that_random_is_made() {
         assertNotNull(out.getRandomQuestion());
     }
 }

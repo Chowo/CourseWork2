@@ -4,7 +4,7 @@ import pro.sky.course_work2_question.model.Question;
 
 import java.util.Set;
 
-public class ExaminerServiceTestConstants {
+public class ServiceTestConstants {
     public static final Question JAVA_QUESTION1 = new Question("Java Question1", "Java Answer1");
     public static final Question JAVA_QUESTION2 = new Question("Java Question2", "Java Answer2");
     public static final Question JAVA_QUESTION3 = new Question("Java Question3", "Java Answer3");

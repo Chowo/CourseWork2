@@ -13,8 +13,8 @@ import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-import static pro.sky.course_work2_question.constants.ExaminerServiceTestConstants.JAVA_QUESTIONS;
-import static pro.sky.course_work2_question.constants.ExaminerServiceTestConstants.MATH_QUESTIONS;
+import static pro.sky.course_work2_question.constants.ServiceTestConstants.JAVA_QUESTIONS;
+import static pro.sky.course_work2_question.constants.ServiceTestConstants.MATH_QUESTIONS;
 
 @ExtendWith(MockitoExtension.class)
 public class ExaminerServiceImplTest {
